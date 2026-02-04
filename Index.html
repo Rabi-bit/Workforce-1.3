@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Chext Master (Standalone)</title>
+<style>
+  body { background:#000; color:#00ff41; font-family: "Courier New", monospace; margin:0; display:flex; height:100vh; }
+  .sidebar { width:300px; border-right:2px solid #00ff41; padding:20px; background:#050505; }
+  .content { flex:1; padding:20px; display:flex; flex-direction:column; }
+  .ai-status { border:1px dashed #00ff41; padding:10px; margin-bottom:20px; color:#ffcc00; font-size:12px; }
+  textarea { width:100%; height:200px; background:#000; color:#00ff41; border:1px solid #00ff41; padding:10px; }
+  .btn { background:#00ff41; color:#000; border:none; padding:10px; cursor:pointer; font-weight:bold; }
+  a { color:#00ff41; }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>ORG COMMAND</h2>
+    <div class="ai-status">
+      <strong>AI AGENT STATUS:</strong> OFFLINE (local demo)<br>
+      <strong>LATEST ACTION:</strong> Demo initialized
+    </div>
+    <hr>
+    <p>Weather: 🌤 Loading...</p>
+    <p>News: 📰 Offline demo</p>
+  </div>
+
+  <div class="content">
+    <h2>DYNAMIC MASTER ENGINE (LOCAL DEMO)</h2>
+    <p>Describe an improvement (this demo will create a fake suggestion you can download):</p>
+    <div style="display:flex;gap:10px;">
+      <input id="prompt" type="text" placeholder="e.g. Add a crypto price tracker" style="flex:1;padding:10px;background:#000;color:#00ff41;border:1px solid #00ff41;">
+      <button class="btn" onclick="askAI()">ASK AI (demo)</button>
+    </div>
+
+    <h3 style="margin-top:30px;">MANUAL OVERRIDE (CODE)</h3>
+    <p>Paste code below and click "Download" to save it locally as a .py file.</p>
+    <textarea id="code"># paste code here</textarea><br>
+    <div style="display:flex;gap:10px;">
+      <button class="btn" onclick="downloadCode()">DOWNLOAD AS .PY</button>
+      <button class="btn" onclick="fillDemo()">Fill demo suggestion</button>
+    </div>
+
+    <h3 style="margin-top:20px;">AI SUGGESTION (DEMO)</h3>
+    <pre id="suggestion" style="white-space:pre-wrap;color:#00ff41;background:#000;padding:10px;border:1px solid #00ff41;">No suggestion yet.</pre>
+  </div>
+
+<script>
+function askAI(){
+  const prompt = document.getElementById('prompt').value.trim();
+  if(!prompt){ alert('Enter a prompt'); return; }
+  // Demo: create a simple fake python function based on the prompt
+  const suggestion = `# Demo suggestion generated for prompt: ${prompt}\n\ndef demo_feature():\n    \"\"\"This is a generated demo placeholder for: ${prompt}\"\"\"\n    print('Feature placeholder for: ${prompt}')\n`;
+  document.getElementById('suggestion').textContent = suggestion;
+}
+
+function downloadCode(){
+  const code = document.getElementById('code').value;
+  const blob = new Blob([code], {type: 'text/x-python'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'manual_suggestion.py';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function fillDemo(){
+  document.getElementById('code').value = '# Example manual code\\nprint("Hello from manual override")';
+}
+</script>
+</body>
+      </html>
